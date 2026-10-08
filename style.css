@@ -1421,3 +1421,118 @@ footer {
         filter: blur(0);
     }
 }
+/* =========================================================
+   CORREÇÃO DEFINITIVA — HEADER MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    header {
+        height: 70px !important;
+        min-height: 70px !important;
+    }
+
+    .header-container {
+        width: 92% !important;
+        height: 70px !important;
+        min-height: 70px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+
+        padding: 0 !important;
+    }
+
+    /* LOGO PEQUENA E NORMAL */
+    .logo {
+        width: auto !important;
+        height: 50px !important;
+
+        display: flex !important;
+        align-items: center !important;
+
+        overflow: hidden !important;
+    }
+
+    .logo img {
+        width: 65px !important;
+        max-width: 65px !important;
+
+        height: 45px !important;
+        max-height: 45px !important;
+
+        object-fit: contain !important;
+        object-position: center !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* BOTÃO QUERO TREINAR */
+    header .btn {
+        display: none !important;
+    }
+
+    /* MENU */
+    .menu-button {
+        display: block !important;
+
+        width: 42px !important;
+        height: 42px !important;
+
+        flex-shrink: 0 !important;
+    }
+
+    /* MENU ABERTO */
+    .mobile-menu {
+        top: 70px !important;
+
+        width: 100% !important;
+        max-height: calc(100vh - 70px) !important;
+
+        overflow-y: auto !important;
+    }
+
+
+    /* =====================================================
+       HERO — NÃO DEIXAR A IMAGEM DOMINAR A TELA
+    ===================================================== */
+
+    .hero {
+        min-height: 680px !important;
+        height: auto !important;
+
+        padding-top: 70px !important;
+    }
+
+    .hero-image {
+        position: absolute !important;
+        inset: 0 !important;
+
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .hero-image img {
+        width: 100% !important;
+        height: 100% !important;
+
+        object-fit: cover !important;
+        object-position: center !important;
+    }
+
+    .hero-content {
+        width: 90% !important;
+
+        padding: 100px 0 60px !important;
+    }
+
+    .hero-content h1 {
+        max-width: 100% !important;
+
+        font-size: clamp(3rem, 15vw, 5rem) !important;
+
+        line-height: 0.9 !important;
+    }
+}
