@@ -1379,3 +1379,45 @@ footer {
         filter: none;
     }
 }
+/* =========================================
+   FADE-IN REAL AO ROLAR
+========================================= */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(70px);
+    filter: blur(5px);
+
+    transition:
+        opacity 0.9s ease,
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.9s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+
+/* Entrada do conteúdo principal */
+
+.hero-enter {
+    animation: heroEnter 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes heroEnter {
+
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+        filter: blur(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
