@@ -1,69 +1,54 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-    /* =========================
-       LOADER / ENTRADA
-    ========================= */
-
+    // LIBERA O SITE AUTOMATICAMENTE
     const loader = document.querySelector(".loader");
 
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            if (loader) {
-                loader.classList.add("hide");
+    if (loader) {
+        setTimeout(function () {
+            loader.classList.add("hide");
+        }, 1200);
+    }
+
+    // FADE-IN DAS SEÇÕES
+    const elementos = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver(function (entries) {
+
+        entries.forEach(function (entry) {
+
+            if (entry.isIntersecting) {
+                entry.target.classList.add("active");
             }
-        }, 500);
+
+        });
+
+    }, {
+        threshold: 0.10
+    });
+
+    elementos.forEach(function (elemento) {
+        observer.observe(elemento);
     });
 
 
-    /* =========================
-       FADE-IN AO ROLAR A PÁGINA
-    ========================= */
-
-    const revealElements = document.querySelectorAll(".reveal");
-
-    const revealObserver = new IntersectionObserver(
-        (entries, observer) => {
-
-            entries.forEach((entry) => {
-
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("active");
-
-                    observer.unobserve(entry.target);
-                }
-
-            });
-
-        },
-        {
-            threshold: 0.15
-        }
-    );
-
-    revealElements.forEach((element) => {
-        revealObserver.observe(element);
-    });
-
-
-    /* =========================
-       MENU MOBILE
-    ========================= */
-
+    // MENU MOBILE
     const menuButton = document.querySelector(".menu-button");
     const mobileMenu = document.querySelector(".mobile-menu");
 
     if (menuButton && mobileMenu) {
 
-        menuButton.addEventListener("click", () => {
+        menuButton.addEventListener("click", function () {
 
             mobileMenu.classList.toggle("active");
             menuButton.classList.toggle("active");
 
         });
 
-        mobileMenu.querySelectorAll("a").forEach((link) => {
+        const links = mobileMenu.querySelectorAll("a");
 
-            link.addEventListener("click", () => {
+        links.forEach(function (link) {
+
+            link.addEventListener("click", function () {
 
                 mobileMenu.classList.remove("active");
                 menuButton.classList.remove("active");
@@ -74,39 +59,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================
-       SCROLL SUAVE
-    ========================= */
-
-    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    // SCROLL SUAVE
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
 
         link.addEventListener("click", function (event) {
 
-            const targetId = this.getAttribute("href");
+            const id = this.getAttribute("href");
 
-            if (!targetId || targetId === "#") return;
+            if (!id || id === "#") return;
 
-            const target = document.querySelector(targetId);
+            const destino = document.querySelector(id);
 
-            if (target) {
+            if (destino) {
 
                 event.preventDefault();
 
-                const header = document.querySelector("header");
-                const headerHeight = header
-                    ? header.offsetHeight
-                    : 0;
-
-                const position =
-                    target.getBoundingClientRect().top +
-                    window.scrollY -
-                    headerHeight -
-                    15;
-
-                window.scrollTo({
-                    top: position,
+                destino.scrollIntoView({
                     behavior: "smooth"
                 });
+
             }
 
         });
@@ -114,15 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =========================
-       HEADER AO ROLAR
-    ========================= */
-
+    // HEADER
     const header = document.querySelector("header");
 
     if (header) {
 
-        window.addEventListener("scroll", () => {
+        window.addEventListener("scroll", function () {
 
             if (window.scrollY > 50) {
                 header.classList.add("scrolled");
@@ -132,17 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
 
-    }
-
-
-    /* =========================
-       ANO AUTOMÁTICO
-    ========================= */
-
-    const year = document.querySelector("#current-year");
-
-    if (year) {
-        year.textContent = new Date().getFullYear();
     }
 
 });
