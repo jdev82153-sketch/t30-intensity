@@ -1,24 +1,35 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
+       CARREGAR TODAS AS IMAGENS DA T30
+    ===================================================== */
+
+    const images = document.querySelectorAll("img");
+
+    images.forEach((img) => {
+        img.loading = "eager";
+        img.decoding = "async";
+    });
+
+
+    /* =====================================================
        LOADER
     ===================================================== */
 
     const loader = document.getElementById("loader");
 
-    const hideLoader = () => {
+    function hideLoader() {
         if (loader) {
             loader.classList.add("hide");
         }
-    };
+    }
 
-    // Não deixa o loader ficar preso
     window.addEventListener("load", () => {
         setTimeout(hideLoader, 500);
     });
 
-    // Segurança: mesmo se alguma imagem demorar
-    setTimeout(hideLoader, 2500);
+    // Segurança para nunca ficar preso
+    setTimeout(hideLoader, 2000);
 
 
     /* =====================================================
@@ -37,25 +48,41 @@ document.addEventListener("DOMContentLoaded", () => {
                     entry.target.classList.add("active");
 
                     observer.unobserve(entry.target);
+
                 }
 
             });
 
         },
         {
-            threshold: 0.12,
-            rootMargin: "0px 0px -40px 0px"
+            threshold: 0.05,
+            rootMargin: "0px 0px 80px 0px"
         }
     );
 
 
     revealElements.forEach((element, index) => {
 
-        // Pequeno atraso para deixar a entrada mais elegante
         element.style.transitionDelay =
-            `${(index % 4) * 0.08}s`;
+            `${(index % 3) * 0.08}s`;
 
         revealObserver.observe(element);
+
+    });
+
+
+    /* =====================================================
+       GARANTIR QUE ELEMENTOS MUITO GRANDES APAREÇAM
+    ===================================================== */
+
+    const sections = document.querySelectorAll("section");
+
+    sections.forEach((section) => {
+
+        if (!section.classList.contains("reveal")) {
+            section.classList.add("reveal");
+            revealObserver.observe(section);
+        }
 
     });
 
@@ -64,8 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
        MENU MOBILE
     ===================================================== */
 
-    const menuButton = document.querySelector(".menu-button");
-    const mobileMenu = document.querySelector(".mobile-menu");
+    const menuButton =
+        document.querySelector(".menu-button");
+
+    const mobileMenu =
+        document.querySelector(".mobile-menu");
+
 
     if (menuButton && mobileMenu) {
 
@@ -78,19 +109,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
-        // Fecha o menu quando clicar em alguma opção
+        mobileMenu
+            .querySelectorAll("a")
+            .forEach((link) => {
 
-        mobileMenu.querySelectorAll("a").forEach((link) => {
+                link.addEventListener("click", () => {
 
-            link.addEventListener("click", () => {
+                    mobileMenu.classList.remove("active");
 
-                mobileMenu.classList.remove("active");
+                    menuButton.classList.remove("active");
 
-                menuButton.classList.remove("active");
+                });
 
             });
-
-        });
 
     }
 
@@ -99,56 +130,63 @@ document.addEventListener("DOMContentLoaded", () => {
        SCROLL SUAVE
     ===================================================== */
 
-    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    document
+        .querySelectorAll('a[href^="#"]')
+        .forEach((link) => {
 
-        link.addEventListener("click", function (event) {
+            link.addEventListener("click", function (event) {
 
-            const targetId = this.getAttribute("href");
+                const id =
+                    this.getAttribute("href");
 
-            if (!targetId || targetId === "#") {
-                return;
-            }
+                if (!id || id === "#") {
+                    return;
+                }
 
-            const target = document.querySelector(targetId);
+                const target =
+                    document.querySelector(id);
 
-            if (!target) {
-                return;
-            }
+                if (!target) {
+                    return;
+                }
 
-            event.preventDefault();
+                event.preventDefault();
 
-            const header = document.querySelector(".site-header");
+                const header =
+                    document.querySelector(".site-header");
 
-            const headerHeight = header
-                ? header.offsetHeight
-                : 0;
+                const headerHeight =
+                    header
+                        ? header.offsetHeight
+                        : 0;
 
-            const targetPosition =
-                target.getBoundingClientRect().top +
-                window.scrollY -
-                headerHeight;
+                const position =
+                    target.getBoundingClientRect().top +
+                    window.scrollY -
+                    headerHeight;
 
-            window.scrollTo({
-                top: targetPosition,
-                behavior: "smooth"
+                window.scrollTo({
+                    top: position,
+                    behavior: "smooth"
+                });
+
             });
 
         });
 
-    });
-
 
     /* =====================================================
-       HEADER AO ROLAR
+       HEADER
     ===================================================== */
 
-    const header = document.querySelector(".site-header");
+    const header =
+        document.querySelector(".site-header");
 
     if (header) {
 
         window.addEventListener("scroll", () => {
 
-            if (window.scrollY > 40) {
+            if (window.scrollY > 30) {
 
                 header.classList.add("scrolled");
 
@@ -164,16 +202,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ANO AUTOMÁTICO
+       ANO
     ===================================================== */
 
-    const year = document.getElementById("current-year");
+    const year =
+        document.getElementById("current-year");
 
     if (year) {
-
         year.textContent =
             new Date().getFullYear();
-
     }
 
 });
