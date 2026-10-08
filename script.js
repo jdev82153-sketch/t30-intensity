@@ -1,40 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =========================================
+    /* =====================================================
        LOADER
-    ========================================= */
+    ===================================================== */
 
-    const loader = document.querySelector(".loader");
+    const loader = document.getElementById("loader");
 
-    if (loader) {
-        setTimeout(() => {
+    const hideLoader = () => {
+        if (loader) {
             loader.classList.add("hide");
-        }, 1000);
-    }
+        }
+    };
 
-
-    /* =========================================
-       FADE-IN AUTOMÁTICO
-    ========================================= */
-
-    // Elementos que vão aparecer conforme a pessoa rola
-    const revealElements = document.querySelectorAll(
-        "section:not(.hero), " +
-        ".differential-card, " +
-        ".plan, " +
-        ".partnership, " +
-        ".schedule-wrapper, " +
-        ".location-grid, " +
-        ".final-cta"
-    );
-
-    revealElements.forEach((element, index) => {
-        element.classList.add("reveal");
-
-        // Pequeno atraso entre os elementos
-        element.style.transitionDelay = `${(index % 4) * 0.08}s`;
+    // Não deixa o loader ficar preso
+    window.addEventListener("load", () => {
+        setTimeout(hideLoader, 500);
     });
 
+    // Segurança: mesmo se alguma imagem demorar
+    setTimeout(hideLoader, 2500);
+
+
+    /* =====================================================
+       FADE-IN
+    ===================================================== */
+
+    const revealElements = document.querySelectorAll(".reveal");
 
     const revealObserver = new IntersectionObserver(
         (entries, observer) => {
@@ -53,30 +44,25 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         {
             threshold: 0.12,
-            rootMargin: "0px 0px -50px 0px"
+            rootMargin: "0px 0px -40px 0px"
         }
     );
 
 
-    revealElements.forEach((element) => {
+    revealElements.forEach((element, index) => {
+
+        // Pequeno atraso para deixar a entrada mais elegante
+        element.style.transitionDelay =
+            `${(index % 4) * 0.08}s`;
+
         revealObserver.observe(element);
+
     });
 
 
-    /* =========================================
-       HERO — ENTRADA
-    ========================================= */
-
-    const heroContent = document.querySelector(".hero-content");
-
-    if (heroContent) {
-        heroContent.classList.add("hero-enter");
-    }
-
-
-    /* =========================================
+    /* =====================================================
        MENU MOBILE
-    ========================================= */
+    ===================================================== */
 
     const menuButton = document.querySelector(".menu-button");
     const mobileMenu = document.querySelector(".mobile-menu");
@@ -86,26 +72,32 @@ document.addEventListener("DOMContentLoaded", () => {
         menuButton.addEventListener("click", () => {
 
             mobileMenu.classList.toggle("active");
+
             menuButton.classList.toggle("active");
 
         });
+
+
+        // Fecha o menu quando clicar em alguma opção
 
         mobileMenu.querySelectorAll("a").forEach((link) => {
 
             link.addEventListener("click", () => {
 
                 mobileMenu.classList.remove("active");
+
                 menuButton.classList.remove("active");
 
             });
 
         });
+
     }
 
 
-    /* =========================================
+    /* =====================================================
        SCROLL SUAVE
-    ========================================= */
+    ===================================================== */
 
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
 
@@ -113,49 +105,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const targetId = this.getAttribute("href");
 
-            if (!targetId || targetId === "#") return;
+            if (!targetId || targetId === "#") {
+                return;
+            }
 
             const target = document.querySelector(targetId);
 
-            if (target) {
-
-                event.preventDefault();
-
-                const header = document.querySelector("header");
-                const headerHeight = header
-                    ? header.offsetHeight
-                    : 0;
-
-                const position =
-                    target.getBoundingClientRect().top +
-                    window.scrollY -
-                    headerHeight;
-
-                window.scrollTo({
-                    top: position,
-                    behavior: "smooth"
-                });
+            if (!target) {
+                return;
             }
+
+            event.preventDefault();
+
+            const header = document.querySelector(".site-header");
+
+            const headerHeight = header
+                ? header.offsetHeight
+                : 0;
+
+            const targetPosition =
+                target.getBoundingClientRect().top +
+                window.scrollY -
+                headerHeight;
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: "smooth"
+            });
 
         });
 
     });
 
 
-    /* =========================================
+    /* =====================================================
        HEADER AO ROLAR
-    ========================================= */
+    ===================================================== */
 
-    const header = document.querySelector("header");
+    const header = document.querySelector(".site-header");
 
     if (header) {
 
         window.addEventListener("scroll", () => {
 
-            if (window.scrollY > 50) {
+            if (window.scrollY > 40) {
+
                 header.classList.add("scrolled");
+
             } else {
+
                 header.classList.remove("scrolled");
+
             }
 
         });
@@ -163,14 +163,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================================
-       ANO
-    ========================================= */
+    /* =====================================================
+       ANO AUTOMÁTICO
+    ===================================================== */
 
-    const year = document.querySelector("#current-year");
+    const year = document.getElementById("current-year");
 
     if (year) {
-        year.textContent = new Date().getFullYear();
+
+        year.textContent =
+            new Date().getFullYear();
+
     }
 
 });
